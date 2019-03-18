@@ -5,11 +5,14 @@ from tabula import read_pdf
 
 for i in range(0, 141):
     if i == 117:
+	
+		#Conversão das tabelas do PDF para Dataframe
         df117 = read_pdf("2008.pdf", pages=117, output_format="dataframe", java_options="-Dfile.encoding=UTF8", pandas_options={'header':None})
         df118 = read_pdf("2008.pdf", pages=118, output_format="dataframe", java_options="-Dfile.encoding=UTF8", pandas_options={'header':None})
         df119 = read_pdf("2008.pdf", pages=119, output_format="dataframe", java_options="-Dfile.encoding=UTF8", pandas_options={'header':None})
         df120 = read_pdf("2008.pdf", pages=120, output_format="dataframe", java_options="-Dfile.encoding=UTF8", pandas_options={'header':None})
 
+		# Correção de dado errado na tabela original
         df119.at[0, 24] = 1
 
         df117.to_csv('DF117bad.csv')
