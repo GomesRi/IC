@@ -25,7 +25,10 @@ dados_X.set_index('Id', inplace=True)
 dados_y.set_index('Id', inplace=True)
 
 X = dados_X.values
-y = dados_y['Tempo'].tolist()
+y = dados_y['Cod'].tolist()
+
+for i in range(len(y)):
+    y[i] = float(y[i].replace(',', '.'))
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3)
 
@@ -70,4 +73,3 @@ print()
 y_true, y_pred = y_test, clf.predict(X_test)
 print(regression.r2_score(y_true, y_pred))
 print()
-
