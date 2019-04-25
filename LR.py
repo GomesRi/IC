@@ -1,9 +1,11 @@
+import time
 import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import regression
 
+start = time.time()
 
 dados_X = pd.read_excel("Apendice 2.xlsx", header=None, skiprows=1, usecols='B:AF')
 dados_y = pd.read_excel("Apendice 3.xlsx", header=None, skiprows=1, usecols='B:D')
@@ -55,11 +57,27 @@ for mean, std, params in zip(means, stds, clf.cv_results_['params']):
         % (mean, std * 2, params))
 print()
 
-print("Detailed classification report:")
-print()
-print("The model is trained on the full development set.")
-print("The scores are computed on the full evaluation set.")
+print("R2 Score Best model:")
 print()
 y_true, y_pred = y_test, clf.predict(X_test)
 print(regression.r2_score(y_true, y_pred))
 print()
+
+best_model = clf.best_estimator_
+
+y_predito = best_model.predict(X)
+residuo = y - y_predito
+erro_quadratico = residuo**2
+
+resultados = {
+    "Valores Reais": y,
+    "Valores Preditos": y_predito.round(6),
+    "Residuo": residuo.round(6),
+    "Erro Quadratico": erro_quadratico.round(6),
+}
+
+resultados_df = pd.DataFrame(resultados)
+resultados_df.to_csv("Resultados_LR.csv", header=True)
+
+end = time.time()
+print("Execution Time: %.2f segundos" % (end - start))
